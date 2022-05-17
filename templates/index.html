@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wine quality predictor</title>
+    <style>
+        input, label {
+            display: block;
+        }
+        label {
+            float: left;
+            margin-right: 5px;
+        }
+        .prediction {
+            font-weight: bold;
+        }
+        #prediction {
+            color:red;
+        }
+    </style>
+</head>
+<body>
+    <form>
+        <fieldset>
+            <legend>Wine quality predictor</legend>
+            <label for="0">fixed acidity</label>
+            <input type="number" id="0" value="10.1">
+            <label for="1">volatile acidity</label>
+            <input type="number" id="1"value="0.37">
+            <label for="2">citric acid</label>
+            <input type="number" id="2" value="0.34">
+            <label for="3">residual sugar</label>
+            <input type="number" id="3" value="2.4">
+            <label for="4">chlorides</label>
+            <input type="number" id="4"value="0.085">
+            <label for="5">free sulfur dioxide</label>
+            <input type="number" id="5" value="5.0">
+            <label for="6">total sulfur dioxide</label>
+            <input type="number" id="6" value="17.0">
+            <label for="7">density</label>
+            <input type="number" id="7" value="0.99683">
+            <label for="8">pH</label>
+            <input type="number" id="8"value="3.17">
+            <label for="9">sulphates</label>
+            <input type="number" id="9" value="0.65">
+            <label for="10">alcohol</label>
+            <input type="number" id="10" value="10.6">
+            <button type="button" onclick="predict()">Predict</button>
+        </fieldset>
+    </form>
+    <div class="prediction">Prediction: <span id="prediction"></span></div>
+
+    <script>
+        function predict() {
+            document.getElementById('prediction').innerHTML = 'working...'
+            let data = [];
+            for(let i=0; i<=10; i++) {
+                data.push(document.getElementById(i).value);
+            }
+            fetch('/result', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.text())
+            .then(prediction => document.getElementById('prediction').innerHTML = prediction);
+        }
+    </script>
+</body>
+</html>
